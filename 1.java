@@ -13,6 +13,8 @@ public class Bounce extends GraphicsProgram {
 		double height = readDouble("Enter the initial height of the ball [0,700]: "); // implement anti error conditions
 		double energyLoss = readDouble("Enter the energy loss entered as a number [0,1]: ");
 		double vt = Math.sqrt(2*G*height);
+		boolean dirrectionUP = false; // direction down
+		double time = 0; 
 		
 		//ball
 		GOval ball = new GOval(200,100,100,100); // the location and size of the ball
@@ -21,14 +23,14 @@ public class Bounce extends GraphicsProgram {
 		add(ball);
 		
 		//line
-		GLine ground = new GLine(0,700,1000,700); // this value will be affected if changing the size of canvas
+		GLine ground = new GLine(0,750,1000,750); // this value will be affected if changing the size of canvas
 		add(ground);
 		
 		//movement of ball (will be affected if changing the size of canvas)
 		double y = 100;
 		double t = 0.001;
 
-		while (y <= 700) {
+		while (y <= 650) {
 			ball.setLocation(200.0,y);
 			y += (4.9)*(t*t);
 			t += 0.001;
