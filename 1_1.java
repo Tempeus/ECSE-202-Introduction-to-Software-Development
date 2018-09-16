@@ -1,20 +1,20 @@
-package temp; 
-
 import java.awt.Color;
 import java.lang.Math;
 import acm.graphics.*;
 import acm.program.*;
 
-public class bounce extends GraphicsProgram {
+public class Bounce extends GraphicsProgram {
 	private static final double G = 9.8;
 	public void run() {
 		//display window
-		this.resize(1000,800); // properties of the canvas
+		this.resize(800,800); // properties of the canvas
 		
 		//identifying important variables
-		double h_max = readDouble("Enter the initial height of the ball [0,700]: "); // implement anti error conditions
+		double hInput = readDouble("Enter the initial height of the ball [0,700]: "); // implement anti error conditions
+		double h_max = 750 - hInput;
 		double h = h_max;
-		double e = readDouble("Enter the energy loss entered as a number [0,1]: ");
+		double energyLoss = readDouble("Enter the energy loss entered as a number [0,1]: ");
+		double e = 1 - energyLoss;
 		double vt = 0;
 		boolean dirUp = false; // direction down
 		double t_eq = 0.001;
@@ -31,62 +31,46 @@ public class bounce extends GraphicsProgram {
 		add(ball);
 		
 		//line	
-		GLine ground = new GLine(0,800,1000,800); // this value will be affected if changing the size of canvas
+		GLine ground = new GLine(0,750,1000,750); // this value will be affected if changing the size of canvas
 		add(ground);
 		
 		//movement of ball (will be affected if changing the size of canvas)
-		double y = 800 - h; // y <= 750 unused
 		
 		while (loop) {
 			if (!dirUp) {
-				h = h - 0.5*G*(t_eq*t_eq);
+				h = h_max + 0.5*G*(t_eq*t_eq);
 				
-				if (h <= 750) { // ground impact
+				if (h >= 750) { // ground impact
+					println("GROUND");
 					dirUp = true;
+					h_max = h;
 					vt = Math.sqrt(2*e*G*h_max);
-					t_tot += t_eq;
 					t_eq = 0;
-					pause(1);
 				}
-				else {
-					t_eq += 0.001;
-					pause(1);
-				}
+				
+				ball.setLocation(200.0,h);
+				t_eq += 0.01;
+				println(h);
+				pause(1);
+
 			}
 			if (dirUp) {
-				h = vt - 0.5*G*(t_eq*t_eq);
+				h = vt - 0.5*G*(t_eq*t_eq); // Something is happening here
+				ball.setLocation(200.0,h);
+				println(h);
+				t_eq += 0.01;
+				pause(1);
+				
+				if (h > h_max) {
+					h_max = h;
+					
+				}
+				//if (h == 0) {
+					//dirUp = false;
+					//t_eq = 0;
+				//}
 				
 			}
 		}
-		
-		
-		
-		
-		/*if (!directionUP) {
-			h = y + (0.5)*(G)*(t*t);
-			if (h <= 0) { // ground impact
-				vt = Math.sqrt(2*e*G*y); //setting terminal velocity and energy loss
-				y = h; 
-				directionUP = true;
-				totalTime += t;
-				t = 0; // resetting time for upward arc
-				ball.setLocation(200.0,h);
-				t += 0.001;
-				pause(1);
-			}
-			else {
-				ball.setLocation(200.0,h);
-				t += 0.001;
-				pause(1);
-			}
-		}
-		*/
-		
-		/*while (y <= 750) {
-			ball.setLocation(200.0,y);
-			y += (G/2)*(t*t);
-			t += 0.001;
-			pause(1); */
-		
 	}
 }
