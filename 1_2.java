@@ -52,7 +52,7 @@ public class Bounce extends GraphicsProgram {
 			
 			if (dirUp) {
 				h = v * t_eq; // for some reason the value here is not changed from the if statement above
-				v =(-G * t_eq);
+				v =(-G * t_eq);//this shouldn't be negative
 				ball.setLocation(200.0,h);
 				println(h);
 				t_eq += 0.01;
