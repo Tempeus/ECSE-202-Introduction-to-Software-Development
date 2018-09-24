@@ -35,16 +35,19 @@ public class Bounce extends GraphicsProgram {
 		
 		//movement mechanic of the ball (will be affected if changing the size of canvas)
 		while (loop) { // generates an infinity loop
-			if (!dirUp) { // which the ball is dropping
+			if (!dirUp) { // which direction the ball is dropping
 				h = h0 - 0.5 * G * Math.pow(t, 2);
 				if (h <= 0) { // ground impact
 					println("GROUND"); // indication that this if statement is triggered
+					h0 = h;
+					
 					dirUp = true; // changes the direction of the ball
 					t = 0;
 					vt = vt * Math.sqrt(1 - e);
 				}
 				else {
 				h = initialUpPosition + vt * t - 0.5 * G * Math.pow(t, 2); // for some reason the value here is not changed from the if statement above
+				}
 				
 				if (h > h0) {
 					h0 = h;
@@ -60,10 +63,16 @@ public class Bounce extends GraphicsProgram {
 			
 			t+= intervalTime;
 			totalTime += intervalTime;
-			pause(intervalTime*1000);
+			pause(intervalTime);
 			
+			//tracer property
 			add(new GOval(xPos+30,570-h,1,1));
 			ball.setLocation(xPos, 540-h);
 		}
 	}
 }
+
+/* problems:
+ * []the ball isn't moving vertically
+ * []bouncing mechanic not implemented
+ */
