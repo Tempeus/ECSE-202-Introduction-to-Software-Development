@@ -41,41 +41,41 @@ public class Li_260862327_A1 extends GraphicsProgram {
 		add(ground);
 
 		// movement mechanic of the ball (will be affected if changing the size of canvas
-		while (totalTime <= TimeOut) { // generates an infinity loop
+		while (totalTime <= TimeOut) { // will terminate the animation as soon as the timeout is reached
 			if (!dirUp) { // which direction the ball is dropping
 				h = h0 - 0.5 * G * Math.pow(t, 2);
 				if (h <= 0) { // ground impact
-//					println("GROUND"); // indication that this if statement is triggered
+//					println("GROUND"); // test: indicate if this part of the program is executing
 					h0 = h;
-					initialUpPosition = 0;
-					h = 0;
+					initialUpPosition = 0; // to ensure the ball touches the ground and doesn't go through
+					h = 0; // to ensure the ball touches the ground and doesn't go through
 					dirUp = true; // changes the direction of the ball
-					t = 0;
-					vt = vt * Math.sqrt(1 - e);
+					t = 0; // reset the time to 0
+					vt = vt * Math.sqrt(1 - e); // applying energy loss to the terminal velocity
 				}
 			}
 			
 			else {
-				h = initialUpPosition + vt * t - 0.5 * G * Math.pow(t, 2); // for some reason the value here is not changed from the if statement above
+				h = initialUpPosition + vt * t - 0.5 * G * Math.pow(t, 2); 
 				if (h > h0) {
 					h0 = h;
 				} 
 				
 				else {
-					dirUp = false;
-					t = 0;
+					dirUp = false; // when the ball starts to drop
+					t = 0; // reset the time to 0
 				}
 			}
 			xPos = xPos + vx * intervalTime;
-			println("Time: " + totalTime + " X: " + xPos + " Y: " + h);
+			println("Time: " + totalTime + " X: " + xPos + " Y: " + h); // printing the results of the ball
 
-			t += intervalTime;
-			totalTime += intervalTime * 0.1;
-			pause(10);
+			t += intervalTime; // increasing the time by the interval
+			totalTime += intervalTime * 0.1; // increasing the total time elapsed and multiplying by 0.1 or else time will elapse too fast
+			pause(10); // pausing for 10 milliseconds for a smoother drop
 
 			// tracer property
-			add(new GOval(xPos + 30, 570 - h, 1, 1));
-			ball.setLocation(xPos, 540 - h);
+			add(new GOval(xPos + 30, 570 - h, 1, 1)); //ensuring that the tracer is at the middle of the ball
+			ball.setLocation(xPos, 540 - h); //ensuring that the tracer is at the middle of the ball
 		}
 	}
 }
