@@ -1,63 +1,82 @@
-import java.awt.Color;
+/* Name: Kevin Li
+ * Student ID: 260862327
+ * Date: 2018.09.26
+ */
 
+import java.awt.Color;
 import acm.graphics.*;
 import acm.program.*;
 
+
 public class Bounce extends GraphicsProgram {
 	private static final double G = 9.8;
+
 	public void run() {
-		//display window
-		this.resize(1000,800); // properties of the canvas
-		
-		//identifying important variables
-		double height = readDouble("Enter the initial height of the ball [0,700]: "); // implement anti error conditions
-		double energyLoss = readDouble("Enter the energy loss entered as a number [0,1]: ");
-		double vt = Math.sqrt(2*G*height);
-		boolean directionUP = false; // direction down
-		double t = 0.001; 
+
+		// display window
+		this.resize(800, 800); // properties of the canvas
+
+		// identifying important variables
+		double h0 = 10 * readDouble("Enter the initial height of the ball in meters [0,70]: "); // implement anti error conditions
+		double h = 0;
+		double e = readDouble("Enter the energy loss entered as a number [0,1]: ");
+		double vt = Math.sqrt(2 * G * h0);
 		double totalTime = 0;
-		double vi = 0;
-		double vf = (vi + G * t);
-		
-		//ball
-		GOval ball = new GOval(200,100,50,50); // the location and size of the ball
+		double t = 0;
+		double initialUpPosition = 0;
+		double intervalTime = 0.1;
+		double TimeOut = 30;
+		double vx = readDouble("Enter the horizontal velocity: ");
+		double xPos = 0;
+		boolean dirUp = false; // direction down
+		boolean loop = true;
+
+		// ball properties
+		GOval ball = new GOval(200, 100, 50, 50); // the location and size of the ball
 		ball.setFilled(true); // physical properties of the ball
 		ball.setColor(Color.BLUE);
 		add(ball);
-		
-		//line	
-		GLine ground = new GLine(0,800,1000,800); // this value will be affected if changing the size of canvas
+
+		// line property
+		GLine ground = new GLine(0, 600, 1000, 600); // this value will be affected if changing the size of canvas
 		add(ground);
-		
-		//movement of ball (will be affected if changing the size of canvas)
-		double y = 800 - height; // y <= 750
-		double h = 0;
-		
-		if (directionUP == false) {
-			h = y + (0.5)*(G)*(t*t);
-			if (h <= 0) { // ground impact
-				vt = Math.sqrt(2*energyLoss*G*y); //setting terminal velocity and energy loss
-				y = h; 
-				directionUP = true;
-				totalTime += t;
-				t = 0; // resetting time for upward arc
-				ball.setLocation(200.0,h);
-				t += 0.001;
-				pause(1);
+
+		// movement mechanic of the ball (will be affected if changing the size of canvas
+		while (totalTime < TimeOut) { // generates an infinity loop
+			if (!dirUp) { // which direction the ball is dropping
+				h = h0 - 0.5 * G * Math.pow(t, 2);
+				if (h <= 0) { // ground impact
+//					println("GROUND"); // indication that this if statement is triggered
+					h0 = h;
+					initialUpPosition = 0;
+					h = 0;
+					dirUp = true; // changes the direction of the ball
+					t = 0;
+					vt = vt * Math.sqrt(1 - e);
+				}
 			}
+			
 			else {
-				ball.setLocation(200.0,h);
-				t += 0.001;
-				pause(1);
+				h = initialUpPosition + vt * t - 0.5 * G * Math.pow(t, 2); // for some reason the value here is not changed from the if statement above
+				if (h > h0) {
+					h0 = h;
+				} 
+				
+				else {
+					dirUp = false;
+					t = 0;
+				}
 			}
+			xPos = xPos + vx * intervalTime;
+			println("Time: " + totalTime + " X: " + xPos + " Y: " + h);
+
+			t += intervalTime;
+			totalTime += intervalTime * 0.1;
+			pause(10);
+
+			// tracer property
+			add(new GOval(xPos + 25, 575 - h, 1, 1));
+			ball.setLocation(xPos, 550 - h);
 		}
-		
-		
-		/*while (y <= 750) {
-			ball.setLocation(200.0,y);
-			y += (G/2)*(t*t);
-			t += 0.001;
-			pause(1); */
-		
 	}
 }
