@@ -10,7 +10,9 @@ import acm.program.*;
 
 public class Bounce extends GraphicsProgram {
 	private static final double G = 9.8;
-
+	private static final double TimeOut = 30;
+	private static final double intervalTime = 0.1;
+	
 	public void run() {
 
 		// display window
@@ -24,12 +26,9 @@ public class Bounce extends GraphicsProgram {
 		double totalTime = 0;
 		double t = 0;
 		double initialUpPosition = 0;
-		double intervalTime = 0.1;
-		double TimeOut = 30;
 		double vx = readDouble("Enter the horizontal velocity: ");
 		double xPos = 0;
 		boolean dirUp = false; // direction down
-		boolean loop = true;
 
 		// ball properties
 		GOval ball = new GOval(200, 100, 50, 50); // the location and size of the ball
@@ -42,7 +41,7 @@ public class Bounce extends GraphicsProgram {
 		add(ground);
 
 		// movement mechanic of the ball (will be affected if changing the size of canvas
-		while (totalTime < TimeOut) { // generates an infinity loop
+		while (totalTime <= TimeOut) { // generates an infinity loop
 			if (!dirUp) { // which direction the ball is dropping
 				h = h0 - 0.5 * G * Math.pow(t, 2);
 				if (h <= 0) { // ground impact
