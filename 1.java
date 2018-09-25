@@ -1,6 +1,6 @@
 /* Name: Kevin Li
  * Student ID: 260862327
- * Date: 2018.09.26
+ * Date: 2018.09.25
  */
 
 import java.awt.Color;
