@@ -8,7 +8,7 @@ import acm.graphics.*;
 import acm.program.*;
 
 
-public class Bounce extends GraphicsProgram {
+public class Li_260862327_A1 extends GraphicsProgram {
 	private static final double G = 9.8;
 	private static final double TimeOut = 30;
 	private static final double intervalTime = 0.1;
@@ -19,7 +19,7 @@ public class Bounce extends GraphicsProgram {
 		this.resize(800, 800); // properties of the canvas
 
 		// identifying important variables
-		double h0 = 10 * readDouble("Enter the initial height of the ball in meters [0,70]: "); // implement anti error conditions
+		double h0 = 10 * readDouble("Enter the initial height of the ball in meters [0,60]: "); // implement anti error conditions
 		double h = 0;
 		double e = readDouble("Enter the energy loss entered as a number [0,1]: ");
 		double vt = Math.sqrt(2 * G * h0);
@@ -29,9 +29,9 @@ public class Bounce extends GraphicsProgram {
 		double vx = readDouble("Enter the horizontal velocity: ");
 		double xPos = 0;
 		boolean dirUp = false; // direction down
-
+		
 		// ball properties
-		GOval ball = new GOval(200, 100, 50, 50); // the location and size of the ball
+		GOval ball = new GOval(200, 100, 60, 60); // the location and size of the ball
 		ball.setFilled(true); // physical properties of the ball
 		ball.setColor(Color.BLUE);
 		add(ball);
@@ -74,8 +74,8 @@ public class Bounce extends GraphicsProgram {
 			pause(10);
 
 			// tracer property
-			add(new GOval(xPos + 25, 575 - h, 1, 1));
-			ball.setLocation(xPos, 550 - h);
+			add(new GOval(xPos + 30, 570 - h, 1, 1));
+			ball.setLocation(xPos, 540 - h);
 		}
 	}
 }
