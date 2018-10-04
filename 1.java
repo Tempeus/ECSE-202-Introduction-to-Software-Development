@@ -1,81 +1,124 @@
-/* Name: Kevin Li
- * Student ID: 260862327
- * Date: 2018.09.25
- */
+import acm.graphics.GLine;
+import acm.graphics.GOval;
+import acm.program.GraphicsProgram;
 
 import java.awt.Color;
-import acm.graphics.*;
-import acm.program.*;
+import java.awt.color.*;
 
+/**
+ * This class will provide an instance of a ball falling 
+ * while under the influence of gravity. Because of the 
+ * Thread extension, each instance will run concurrently,
+ * with animations on the screen as a side effect.
+ * 
+ * @author kli69
+ *
+ */
 
-public class Li_260862327_A1 extends GraphicsProgram {
+public class gBall extends Thread {
+	
+	
+	
+	public GOval myBall;
+	
+	//constant units
 	private static final double G = 9.8;
 	private static final double TimeOut = 30;
 	private static final double intervalTime = 0.1;
 	
+	//initialization of parameters
+	double Xi;
+	double Yi;
+	double bSize;
+	Color bColor;
+	double bLoss;
+	double bVel;
+	
+	/**
+	 * Specified parameters for the simulation
+	 * 
+	 * @param Xi		double		The initial X position of the center of the ball
+	 * 
+	 * @param Yi		double		The initial Y position of the center of the ball
+	 * 
+	 * @param bSize		double		The radius of the ball in simulation units
+	 * 
+	 * @param bColor	Color		The initial color of the ball 
+	 * 
+	 * @param bLoss		double		Fraction [0,1] of the energy loss on each bounce
+	 * 
+	 * @param bvel		double		X velocity of ball
+	 */
+	
+	public gBall(double Xi, double Yi,double bSize, Color bColor, double bLoss, double bVel) {
+		//simulation parameters
+		this.Xi = Xi;
+		this.Yi = Yi;
+		this.bSize = bSize;
+		this.bColor = bColor;
+		this.bLoss = bLoss;
+		this.bVel = bVel;
+				
+	}
+	
+	/**
+	 * The following run method implements the simulation that I created from the previous assignment.
+	 * Once the start method is called on the gBall instance, the code in the run method is executed
+	 * concurrently with the main program.
+	 * @param void
+	 * @return void
+	 */
+	
 	public void run() {
-
-		// display window
-		this.resize(800, 800); // properties of the canvas
-
-		// identifying important variables
-		double h0 = 10 * readDouble("Enter the initial height of the ball in meters [0,60]: "); // implement anti error conditions
+		
+		//variables used in the program
 		double h = 0;
-		double e = readDouble("Enter the energy loss entered as a number [0,1]: ");
-		double vt = Math.sqrt(2 * G * h0);
+		double vt = Math.sqrt(2*G*Yi);
 		double totalTime = 0;
 		double t = 0;
 		double initialUpPosition = 0;
-		double vx = readDouble("Enter the horizontal velocity: ");
 		double xPos = 0;
-		boolean dirUp = false; // direction down
+		boolean dirUp = false; //direction down
 		
-		// ball properties
-		GOval ball = new GOval(200, 100, 60, 60); // the location and size of the ball
-		ball.setFilled(true); // physical properties of the ball
-		ball.setColor(Color.BLUE);
-		add(ball);
-
-		// line property
-		GLine ground = new GLine(0, 600, 1000, 600); // this value will be affected if changing the size of canvas
-		add(ground);
-
-		// movement mechanic of the ball (will be affected if changing the size of canvas
-		while (totalTime <= TimeOut) { // will terminate the animation as soon as the timeout is reached
-			if (!dirUp) { // which direction the ball is dropping
-				h = h0 - 0.5 * G * Math.pow(t, 2);
-				if (h <= 0) { // ground impact
-//					println("GROUND"); // test: indicate if this part of the program is executing
-					h0 = h;
-					initialUpPosition = 0; // to ensure the ball touches the ground and doesn't go through
-					h = 0; // to ensure the ball touches the ground and doesn't go through
-					dirUp = true; // changes the direction of the ball
+	
+		//properties of ball instance
+		myBall = new GOval(this.Xi, this.Yi, this.bSize, this.bSize);
+		myBall.setFilled(true);
+		myBall.setFillColor(this.bColor);
+		
+		while (totalTime <= TimeOut) {
+			if (!dirUp) {
+				h = Yi - 0.5 * G *Math.pow(t, 2);
+				if (h <= 0) {
+					Yi = h;
+					initialUpPosition = 0; // to ensure the ball touches the ground and doesn't go through it
+					h = 0; // to ensure the ball touches the ground and doesn't go through.
+					dirUp = true; // Chances the direction of the ball
 					t = 0; // reset the time to 0
-					vt = vt * Math.sqrt(1 - e); // applying energy loss to the terminal velocity
+					vt = vt * Math.sqrt(1 - bLoss); // applying energy loss to the terminal velocity.
 				}
 			}
 			
 			else {
-				h = initialUpPosition + vt * t - 0.5 * G * Math.pow(t, 2); 
-				if (h > h0) {
-					h0 = h;
-				} 
+				h = initialUpPosition + vt * t - 0.5 * G * Math.pow(t,2);
+				if (h > Yi) {
+					Yi = h;
+				}
 				
 				else {
 					dirUp = false; // when the ball starts to drop
 					t = 0; // reset the time to 0
 				}
 			}
-			xPos = xPos + vx * intervalTime;
-			println("Time: " + totalTime + " X: " + xPos + " Y: " + h); // printing the results of the ball
-
+			xPos = xPos + bVel *intervalTime;
+			System.out.println("Time: " + totalTime + " X: " + xPos + " Y: " + h); // printing the results of the ball
+			
 			t += intervalTime; // increasing the time by the interval
-			totalTime += intervalTime * 0.1; // increasing the total time elapsed and multiplying by 0.1 or else time will elapse too fast
-			pause(10); // pausing for 10 milliseconds for a smoother drop
+			totalTime += intervalTime; // increasing the total time elapsed
 
-			// tracer property
-			add(new GOval(xPos + 30, 570 - h, 1, 1)); //ensuring that the tracer is at the middle of the ball
-			ball.setLocation(xPos, 540 - h); //ensuring that the tracer is at the middle of the ball
 		}
 	}
 }
+
+
+// [] IMPLEMENT THREAD
