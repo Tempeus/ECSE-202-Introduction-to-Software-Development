@@ -1,6 +1,8 @@
+import acm.graphics.GLine;
 import acm.program.GraphicsProgram;
 
 public class bSim extends GraphicsProgram {
+	//required parameters for the program
 	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 600;
 	private static final int OFFSET = 200;
@@ -17,6 +19,9 @@ public class bSim extends GraphicsProgram {
 	private static final double VMAX = 3.0;
 	
 	public void run() {
-		
+		//set up display, create and start multiple instances of gball
+		this.resize(WIDTH,800);
+		GLine ground = new GLine(0,HEIGHT,WIDTH,HEIGHT);
+		add(ground);
 	}
 }
