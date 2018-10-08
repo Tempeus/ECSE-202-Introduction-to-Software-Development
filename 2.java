@@ -17,7 +17,6 @@ public class gBall extends Thread {
 	
 	//constant units
 	private static final double G = 9.8;
-	private static final double TimeOut = 30;
 	private static final double intervalTime = 0.1;
 	
 	//initialization of parameters
