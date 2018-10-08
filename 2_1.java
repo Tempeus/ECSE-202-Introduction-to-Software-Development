@@ -37,7 +37,7 @@ public class bSim extends GraphicsProgram {
 			double iE = rgen.nextDouble(EMIN,EMAX);
 			double iV = rgen.nextDouble(VMIN,VMAX);
 			
-			gBall iball = new gBall(iX *10,iY * 10,iSize ,iColor ,iE ,iV);
+			gBall iball = new gBall(iX *5,iY * 5,iSize ,iColor ,iE ,iV);
 			add(iball.myBall);
 			iball.start();
 		}
