@@ -74,7 +74,7 @@ public class gBall extends Thread {
 		double vt = Math.sqrt(2*G*this.Yi);
 		double t = 0;
 		double initialUpPosition = 0;
-		double xPos = 0;
+		double xPos = this.Xi;
 		boolean dirUp = false; //direction down
 		
 		while (true) {
