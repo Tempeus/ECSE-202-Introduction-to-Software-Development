@@ -87,6 +87,9 @@ public class gBall extends Thread {
 					t = 0; // reset the time to 0
 					vt = vt * Math.sqrt(1 - this.bLoss); // applying energy loss to the terminal velocity.
 					dirUp = true; // Chances the direction of the ball
+					if (vt <= 0.5){
+						break;
+					}
 				}
 			}
 			
