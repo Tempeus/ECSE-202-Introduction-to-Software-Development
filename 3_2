@@ -69,20 +69,23 @@ public class bTree {
 		return BMRunning;
 	}
 	
+	//Sorting method
 	public void moveSort() {
 		ref = 0;
 		Bsorting(root);
 	}
 	
 	private void Bsorting(bNode root) {
-		if (root.left!= null) 
+		if (root.left!= null) {
 			Bsorting(root.left);
+		}
 			root.iBall.myBall.setLocation(ref, bSim.HEIGHT - root.iBall.bSize * 2);
 			ref += root.iBall.bSize * 2;
 		
 
-		if (root.right!= null)
+		if (root.right!= null) {
 			Bsorting(root.right);
+		}
 	}
 	
 	public class bNode {
