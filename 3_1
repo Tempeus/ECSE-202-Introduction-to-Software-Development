@@ -1,14 +1,18 @@
 import java.awt.Color;
+import java.awt.Font;
+
+import acm.graphics.GLabel;
 import acm.graphics.GLine;
 import acm.program.GraphicsProgram;
 import acm.util.RandomGenerator;
 
+@SuppressWarnings("serial")
 public class bSim extends GraphicsProgram {
 	//required parameters for the program
 	private static final int WIDTH = 1200;
-	private static final int HEIGHT = 600;
-	private static final int OFFSET = 200;
-	private static final int NUMBALLS = 15;
+	public static final int HEIGHT = 600;
+	public static final int OFFSET = 200;
+	public static final int NUMBALLS = 15;
 	private static final double MINSIZE = 1;
 	private static final double MAXSIZE = 8;
 	private static final double XMIN = 10;
@@ -22,6 +26,10 @@ public class bSim extends GraphicsProgram {
 	
 	RandomGenerator rgen = new RandomGenerator();
 	bTree myTree = new bTree();	
+	
+	public void init() {
+		addMouseListeners();
+	}
 	
 	public void run() {
 		
@@ -39,10 +47,17 @@ public class bSim extends GraphicsProgram {
 			double iE = rgen.nextDouble(EMIN,EMAX);
 			double iV = rgen.nextDouble(VMIN,VMAX);
 			
-			gBall iball = new gBall(iX *5,iY * 5,iSize ,iColor ,iE ,iV);
+			gBall iball = new gBall(iX *5,iY * 5,iSize * 5 ,iColor ,iE ,iV);
 			add(iball.myBall);
 			myTree.addNode(iball);
 			iball.start();
 		}
+		while(myTree.isRunning());
+		
+		GLabel Notification = new GLabel ("Left click to sort the balls",400, 500);
+		Notification.setFont(new Font("Serif",Font.BOLD, 46));
+		add(Notification);
+		waitForClick();
+		myTree.moveSort();
 	}
 }
