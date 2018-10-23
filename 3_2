@@ -5,7 +5,8 @@
  */
 
 public class bTree {
-	public static int NBalls = 0;
+	private static boolean BMRunning = true;
+	public double ref = 0;
 	bNode root = null;					// Default constructor
 	
 /**
@@ -47,38 +48,41 @@ public class bTree {
 		return root;
 	}
 	
-/**
- * inorder method - inorder traversal via call to recursive method
- */
+
+	/**
+	 * traverse_inorder method - recursively traverses tree in order and prints each node.
+	 * Order: Descend following left successor links, returning back to the current
+	 *        root node (where a specific action takes place, e.g., printing data),
+	 *        and then repeat the descent along right successor links.
+	 */
 	
-	public void inorder() {			// This is a wrapper for traverse_
-		traverse_inorder(root);		// inorder to hide details of the
-	}								// root node.
-	
-/**
- * traverse_inorder method - recursively traverses tree in order and prints each node.
- * Order: Descend following left successor links, returning back to the current
- *        root node (where a specific action takes place, e.g., printing data),
- *        and then repeat the descent along right successor links.
- */
-	
-	private void traverse_inorder(bNode root) {
-		if (root.left != null) traverse_inorder(root.left);
-		System.out.println(root.iBall);
-		if (root.right != null) traverse_inorder(root.right);
+	private void ReRunning(bNode root) {
+		if (root.left != null) ReRunning(root.left);
+		if (root.iBall.ballRun == true) BMRunning = true;
+		if (root.right != null) ReRunning(root.right);
 	}
 	
-	public boolean isRunning(gBall x) {
-		if (x.bVel > 0) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	//Wrapper class 
+	public boolean isRunning() {
+		BMRunning = false;
+		ReRunning(root);
+		return BMRunning;
 	}
 	
 	public void moveSort() {
+		ref = 0;
+		Bsorting(root);
+	}
+	
+	private void Bsorting(bNode root) {
+		if (root.left!= null) 
+			Bsorting(root.left);
+			root.iBall.myBall.setLocation(ref, bSim.HEIGHT - root.iBall.bSize * 2);
+			ref += root.iBall.bSize * 2;
 		
+
+		if (root.right!= null)
+			Bsorting(root.right);
 	}
 	
 	public class bNode {
