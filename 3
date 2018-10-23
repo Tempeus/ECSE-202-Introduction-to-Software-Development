@@ -1,6 +1,7 @@
 import acm.graphics.GOval;
 import java.awt.Color;
 
+
 /**
  * This class will provide an instance of a ball falling 
  * while under the influence of gravity. Because of the 
@@ -12,11 +13,11 @@ import java.awt.Color;
  */
 
 public class gBall extends Thread {
-	
+	public boolean ballRun = true;
 	public GOval myBall;
 	
 	//constant units
-	private static final double G = 9.8;
+	private static final double G = 98;
 	private static final double intervalTime = 0.1;
 	
 	//initialization of parameters
@@ -88,7 +89,7 @@ public class gBall extends Thread {
 					vt = vt * Math.sqrt(1 - this.bLoss); // applying energy loss to the terminal velocity.
 					dirUp = true; // Chances the direction of the ball
 					if (vt <= 0.5){
-						bTree.NBalls += 1;
+						ballRun = false;
 						break;
 					}
 				}
