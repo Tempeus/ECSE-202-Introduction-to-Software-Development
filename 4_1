@@ -1,102 +1,89 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.MouseEvent;
+
+import acm.graphics.GLabel;
+import acm.graphics.GLine;
+import acm.graphics.GObject;
 import acm.graphics.GOval;
+import acm.program.GraphicsProgram;
+import acm.util.RandomGenerator;
 
-/**
- * Implements a Binary tree class
- * @author Kevin
- *
- */
-
-public class bTree {
-	private static boolean BMRunning = true;
-	public double ref = 0;
-	bNode root = null;					// Default constructor
+@SuppressWarnings("serial")
+public class bSim extends GraphicsProgram {
+	//required parameters for the program
+	private static final int WIDTH = 1200;
+	public static final int HEIGHT = 600;
+	public static final int OFFSET = 200;
+	public static final int NUMBALLS = 15;
+	private static final double MINSIZE = 1;
+	private static final double MAXSIZE = 8;
+	private static final double XMIN = 10;
+	private static final double XMAX = 50;
+	private static final double YMIN = 50;
+	private static final double YMAX = 100;
+	private static final double EMIN = 0.4;
+	private static final double EMAX = 0.9;
+	private static final double VMIN = 0.5;
+	private static final double VMAX = 3.0;
+	private GObject gobj; /* The object being dragged */
+	private double lastX;
+	private double lastY;
+	private GOval clickedOval;
+	private bNode clickedNode;
+	private bTree myTree;
 	
-	public bNode findNode(GOval value) {
-		return findNodeRecursive(root, value);
+	
+	RandomGenerator rgen = new RandomGenerator();
+	
+	public void init() {
+		addMouseListeners();
 	}
 	
-	private bNode findNodeRecursive(bNode current, GOval value) {
-		if (root.left != null) findNodeRecursive(root.left, );
-		if () return //;
-		if (root.right != null) findNodeRecursive(root.right);
-	}
-/**
- * addNode method - wrapper for rNode
- */	
-	public void addNode(gBall iBall) {		// This is a wrapper to hide
-		root = rNode(root, iBall);			// having to deal with root node.
-	}									// Calls actual method below.
-/**
- * rNode method - recursively adds a new entry into the B-Tree
- */	
-	private bNode rNode(bNode root, gBall iBall) {
-//
-//  Termination condition for recursion.  We have descended to a leaf
-//  node of the tree (or the tree may initially be empty).  In either case,
-//	create a new node --> copy over data, set successor nodes to null.
-//
-		if (root == null) {
-			bNode node = new bNode();	// Create a new node
-			node.iBall = iBall;			// Copy data
-			node.left = null;			// Successors to null.
-			node.right = null;
-			root = node;					// Node created is root
-			return root;				// of new (sub) tree.
-		}
-//
-//	Not at a leaf node, so traverse to the left if data being
-//  added is strictly less than data at current node.
-//
-		else if (iBall.bSize < root.iBall.bSize) {
-			root.left = rNode(root.left,iBall);
-		}
-//
-//  If greater than or equal, then traverse to the right.  Keep
-//  recursing until a node is found with no successors.
-		else {
-			root.right = rNode(root.right,iBall);
-		}
-		return root;
-	}
-	
-
-	/**
-	 * traverse_inorder method - recursively traverses tree in order and prints each node.
-	 * Order: Descend following left successor links, returning back to the current
-	 *        root node (where a specific action takes place, e.g., printing data),
-	 *        and then repeat the descent along right successor links.
-	 */
-	
-	private void ReRunning(bNode root) {
-		if (root.left != null) ReRunning(root.left);
-		if (root.iBall.ballRun == true) BMRunning = true;
-		if (root.right != null) ReRunning(root.right);
-	}
-	
-	//Wrapper class 
-	public boolean isRunning() {
-		BMRunning = false;
-		ReRunning(root);
-		return BMRunning;
-	}
-	
-	//Sorting method
-	public void moveSort() {
-		ref = 0;
-		Bsorting(root);
-	}
-	
-	private void Bsorting(bNode root) {
-		if (root.left!= null) {
-			Bsorting(root.left);
-		}
-			root.iBall.myBall.setLocation(ref, bSim.HEIGHT - root.iBall.bSize * 2);
-			ref += root.iBall.bSize * 2;
+	public void run() {
 		
-
-		if (root.right!= null) {
-			Bsorting(root.right);
+		addMouseListeners();
+		//set up display, create and start multiple instances of gball
+		this.resize(WIDTH, HEIGHT + OFFSET);
+		GLine ground = new GLine(0,HEIGHT,WIDTH,HEIGHT);
+		add(ground);
+		
+		
+		
+		for(int i = 0; i < NUMBALLS; i++) {
+			double iX = rgen.nextDouble(XMIN,XMAX);
+			double iY = rgen.nextDouble(YMIN,YMAX);
+			double iSize = rgen.nextDouble(MINSIZE,MAXSIZE);
+			Color iColor = rgen.nextColor();
+			double iE = rgen.nextDouble(EMIN,EMAX);
+			double iV = rgen.nextDouble(VMIN,VMAX);
+			
+			gBall iball = new gBall(iX *5,iY * 5,iSize * 5 ,iColor ,iE ,iV);
+			add(iball.myBall);
+			myTree.addNode(iball);
+			iball.start();
 		}
+		while(myTree.isRunning());
+		
+		GLabel Notification = new GLabel ("Left click to sort the balls",400, 500);
+		Notification.setFont(new Font("Serif",Font.BOLD, 46));
+		add(Notification);
+		waitForClick();
+		myTree.moveSort();
 	}
 	
+	public void mousePressed(MouseEvent e) {
+		lastX = e.getX();
+		lastY = e.getY();
+		gobj = getElementAt(lastX, lastY);
+		if (!(gobj == null)) {
+			clickedOval = (GOval) gobj;
+			clickedNode = myTree.findNode(clickedOval);
+			clickedNode.data.myBall.setColor(Color.RED);
+			clickedNode.data.setBState(false);
+		}
+		else {
+			println("null");
+		}
+	}
 }
