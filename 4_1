@@ -1,16 +1,26 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.MouseEvent;
+import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import acm.graphics.GLabel;
 import acm.graphics.GLine;
-import acm.graphics.GObject;
-import acm.graphics.GOval;
+import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 import acm.util.RandomGenerator;
 
+
 @SuppressWarnings("serial")
-public class bSim extends GraphicsProgram {
+public class bSim extends GraphicsProgram implements ChangeListener, ItemListener{
 	//required parameters for the program
 	private static final int WIDTH = 1200;
 	public static final int HEIGHT = 600;
@@ -26,28 +36,211 @@ public class bSim extends GraphicsProgram {
 	private static final double EMAX = 0.9;
 	private static final double VMIN = 0.5;
 	private static final double VMAX = 3.0;
-	private GObject gobj; /* The object being dragged */
-	private double lastX;
-	private double lastY;
-	private GOval clickedOval;
-	private bNode clickedNode;
-	private bTree myTree;
-	
 	
 	RandomGenerator rgen = new RandomGenerator();
+	bTree myTree = new bTree();	
+	
+	int nBalls;
+	int minSize;
+	int maxSize;
+	int xMin;
+	int xMax;
+	int yMin;
+	int yMax;
+	int lMin;
+	int lMax;
+	int velMin;
+	int velMax;
+	
+	void addSliderListeners() {
+		numballSlider.Slider.addChangeListener((ChangeListener)this);
+		MinSize.Slider.addChangeListener((ChangeListener)this);
+		MaxSize.Slider.addChangeListener((ChangeListener)this);
+		XMax.Slider.addChangeListener((ChangeListener)this);
+		XMin.Slider.addChangeListener((ChangeListener)this);
+		YMax.Slider.addChangeListener((ChangeListener)this);
+		YMin.Slider.addChangeListener((ChangeListener)this);
+		LMax.Slider.addChangeListener((ChangeListener)this);
+		LMin.Slider.addChangeListener((ChangeListener)this);
+		VelMin.Slider.addChangeListener((ChangeListener)this);
+		VelMax.Slider.addChangeListener((ChangeListener)this);
+	}
+	
+	public void stateChanged(ChangeEvent e) {
+		JSlider source = (JSlider)e.getSource();
+		
+		if (source == numballSlider.Slider) {
+			nBalls = numballSlider.getSlider();
+			numballSlider.setSlider(nBalls);
+		}
+		
+		else if (source == MinSize.Slider) {
+			minSize = MinSize.getSlider();
+			MinSize.setSlider(minSize);
+		}
+		
+		else if (source == MaxSize.Slider) {
+			maxSize = MaxSize.getSlider();
+			MaxSize.setSlider(maxSize);
+		}
+		
+		else if (source == XMin.Slider) {
+			xMin = XMin.getSlider();
+			XMin.setSlider(xMin);
+		}
+		
+		else if (source == XMax.Slider) {
+			xMax = XMax.getSlider();
+			XMax.setSlider(xMax);
+		}
+		
+		else if (source == YMin.Slider) {
+			yMin = YMin.getSlider();
+			YMin.setSlider(yMin);
+		}
+		
+		else if (source == YMax.Slider) {
+			yMax = YMax.getSlider();
+			YMax.setSlider(yMax);
+		}
+		
+		else if (source == LMin.Slider) {
+			lMin = LMin.getSlider();
+			LMin.setSlider(lMin);
+		}
+		
+		else if (source == LMax.Slider) {
+			lMax = LMax.getSlider();
+			LMax.setSlider(lMax);
+		}
+		
+		else if (source == VelMin.Slider) {
+			velMin = VelMin.getSlider();
+			VelMin.setSlider(velMin);
+		}
+		
+		else if (source == VelMax.Slider) {
+			velMax = VelMax.getSlider();
+			VelMax.setSlider(velMax);
+		}
+	}
 	
 	public void init() {
 		addMouseListeners();
 	}
 	
-	public void run() {
+	JComboBox<String> bSimC;
+	
+	void setChoosers() {
+		bSimC = new JComboBox<String>();
+		bSimC.addItem("bSim");
+		bSimC.addItem("Run");
+		bSimC.addItem("Clear");
+		bSimC.addItem("Stop");
+		bSimC.addItem("Quit");
+		add(bSimC,NORTH);
+		addJComboListeners();
 		
-		addMouseListeners();
+		
+	}
+	
+	void addJComboListeners() {
+		bSimC.addItemListener((ItemListener)this);
+	}
+	
+	public void itemStateChanged(ItemEvent e) {
+		JComboBox source = (JComboBox)e.getSource();
+		
+		if (source == bSimC) {
+			if (bSimC.getSelectedIndex() == 1) { // Run
+				System.out.println("Starting Simulation");
+				//this.SimRunning = true;
+			}
+			
+			if (bSimC.getSelectedIndex() == 2) { // CLear
+				
+			}
+			
+			if (bSimC.getSelectedIndex() == 3) { // Stop
+				
+			}
+			
+			if (bSimC.getSelectedIndex() == 4) { // Quit
+				System.exit(0);
+			}
+		}
+		
+	}
+
+	Sliders numballSlider;
+	Sliders MinSize;
+	Sliders MaxSize;
+	Sliders XMin;
+	Sliders XMax;
+	Sliders YMin;
+	Sliders YMax;
+	Sliders LMin;
+	Sliders LMax;
+	Sliders VelMin;
+	Sliders VelMax;
+	
+	public void run() {
+		JPanel pEast = new JPanel();
+		
+		JLabel generalSim = new JLabel("General Simulation Parameters");
+		pEast.add(generalSim);
+		
+		pEast.setLayout(new GridLayout(17,1));
+		
+		Sliders numballSlider = new Sliders("NUMBALLS", 1, 15, 25);
+		pEast.add(numballSlider.Panel, "EAST");
+		numballSlider.Slider.addChangeListener((ChangeListener)this);
+		
+		Sliders MinSize = new Sliders("MIN SIZE", 1.0, 1.0, 25.0);
+		pEast.add(MinSize.Panel,"EAST");
+		MinSize.Slider.addChangeListener((ChangeListener)this);
+		
+		Sliders MaxSize = new Sliders("MAX SIZE", 1.0, 8.0, 25.0);
+		pEast.add(MaxSize.Panel,"EAST");
+		MaxSize.Slider.addChangeListener((ChangeListener)this);
+		
+		Sliders XMin = new Sliders("X MIN", 1.0, 10.0, 200.0);
+		pEast.add(XMin.Panel,"EAST");
+		XMin.Slider.addChangeListener((ChangeListener)this);
+		
+		Sliders XMax = new Sliders("X MAX", 1.0, 50.0, 200.0);
+		pEast.add(XMax.Panel,"EAST");
+		XMax.Slider.addChangeListener((ChangeListener)this);
+		
+		Sliders LMin = new Sliders("LOSS MIN", 0.0, 0.4, 1.0);
+		pEast.add(LMin.Panel,"EAST");
+		LMin.Slider.addChangeListener((ChangeListener)this);
+		
+		Sliders LMax = new Sliders("LOSS MAX", 0.0, 1.0, 1.0);
+		pEast.add(LMax.Panel,"EAST");
+		LMax.Slider.addChangeListener((ChangeListener)this);
+		
+		Sliders VelMin = new Sliders("X VEL MIN", 0.0, 1.0, 10.0);
+		pEast.add(VelMin.Panel,"EAST");
+		VelMin.Slider.addChangeListener((ChangeListener)this);
+		
+		Sliders VelMax = new Sliders("X VEL MAX", 0.0, 5.0, 10.0);
+		pEast.add(VelMax.Panel,"EAST");
+		VelMax.Slider.addChangeListener((ChangeListener)this);
+		
+		JLabel SingleBallParam = new JLabel("Single Ball Instance Parameters");
+		pEast.add(SingleBallParam);
+		
+		add(pEast);
+		
+		setChoosers();
+		
 		//set up display, create and start multiple instances of gball
 		this.resize(WIDTH, HEIGHT + OFFSET);
-		GLine ground = new GLine(0,HEIGHT,WIDTH,HEIGHT);
+		GRect ground = new GRect(0,HEIGHT,WIDTH,3);
+		ground.setColor(Color.BLACK);
+		ground.setFilled(true);
 		add(ground);
-		
 		
 		
 		for(int i = 0; i < NUMBALLS; i++) {
@@ -71,19 +264,6 @@ public class bSim extends GraphicsProgram {
 		waitForClick();
 		myTree.moveSort();
 	}
-	
-	public void mousePressed(MouseEvent e) {
-		lastX = e.getX();
-		lastY = e.getY();
-		gobj = getElementAt(lastX, lastY);
-		if (!(gobj == null)) {
-			clickedOval = (GOval) gobj;
-			clickedNode = myTree.findNode(clickedOval);
-			clickedNode.data.myBall.setColor(Color.RED);
-			clickedNode.data.setBState(false);
-		}
-		else {
-			println("null");
-		}
-	}
 }
+
+// make it so it can take doubles as well
