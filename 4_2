@@ -1,25 +1,15 @@
-import acm.graphics.GOval;
-
 /**
  * Implements a Binary tree class
  * @author Kevin
  *
  */
 
+
 public class bTree {
 	private static boolean BMRunning = true;
 	public double ref = 0;
 	bNode root = null;					// Default constructor
 	
-	public bNode findNode(GOval value) {
-		return findNodeRecursive(root, value);
-	}
-	
-	private bNode findNodeRecursive(bNode current, GOval value) {
-		if (root.left != null) findNodeRecursive(root.left, );
-		if () return //;
-		if (root.right != null) findNodeRecursive(root.right);
-	}
 /**
  * addNode method - wrapper for rNode
  */	
@@ -60,6 +50,7 @@ public class bTree {
 	}
 	
 
+
 	/**
 	 * traverse_inorder method - recursively traverses tree in order and prints each node.
 	 * Order: Descend following left successor links, returning back to the current
@@ -94,9 +85,15 @@ public class bTree {
 			ref += root.iBall.bSize * 2;
 		
 
+
 		if (root.right!= null) {
 			Bsorting(root.right);
 		}
 	}
 	
+	public class bNode {
+		gBall iBall;
+		bNode left;
+		bNode right;
+	}
 }
