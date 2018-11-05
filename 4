@@ -4,6 +4,10 @@ import java.awt.Color;
 
 
 
+
+
+
+
 /**
  * This class will provide an instance of a ball falling 
  * while under the influence of gravity. Because of the 
@@ -15,13 +19,15 @@ import java.awt.Color;
  */
 
 
+
+
 public class gBall extends Thread {
 	public boolean ballRun = true;
 	public GOval myBall;
 	
 	//constant units
 	private static final double G = 98;
-	private static final double intervalTime = 0.1;
+	public static double intervalTime = 0.1;
 	
 	//initialization of parameters
 	double Xi;
@@ -71,6 +77,8 @@ public class gBall extends Thread {
 	 * @return void
 	 */
 	
+	public boolean r = true;
+	
 	public void run() {
 		
 		//variables used in the program
@@ -81,43 +89,47 @@ public class gBall extends Thread {
 		double xPos = this.Xi;
 		boolean dirUp = false; //direction down
 		
+		
 		while (true) {
-			if (!dirUp) {
-				h = this.Yi - 0.5 * G *Math.pow(t, 2);
-				if (h <= 0) {
-					this.Yi = h;
-					initialUpPosition = 0; // to ensure the ball touches the ground and doesn't go through it
-					h = 0; // to ensure the ball touches the ground and doesn't go through.
-					t = 0; // reset the time to 0
-					vt = vt * Math.sqrt(1 - this.bLoss); // applying energy loss to the terminal velocity.
-					dirUp = true; // Chances the direction of the ball
-					if (vt <= 0.5){
-						ballRun = false;
-						break;
+			while (r) {
+				if (!dirUp) {
+					h = this.Yi - 0.5 * G *Math.pow(t, 2);
+					if (h <= 0) {
+						this.Yi = h;
+						initialUpPosition = 0; // to ensure the ball touches the ground and doesn't go through it
+						h = 0; // to ensure the ball touches the ground and doesn't go through.
+						t = 0; // reset the time to 0
+						vt = vt * Math.sqrt(1 - this.bLoss); // applying energy loss to the terminal velocity.
+						dirUp = true; // Chances the direction of the ball
+						if (vt <= 0.4){
+							ballRun = false;
+							r = false;
+							break;
+						}
 					}
-				}
-			}
-			
-			else {
-				h = initialUpPosition + vt * t - 0.5 * G * Math.pow(t,2);
-				if (h > this.Yi) {
-					this.Yi = h;
 				}
 				
 				else {
-					dirUp = false; // when the ball starts to drop
-					t = 0; // reset the time to 0
+					h = initialUpPosition + vt * t - 0.5 * G * Math.pow(t,2);
+					if (h > this.Yi) {
+						this.Yi = h;
+					}
+					
+					else {
+						dirUp = false; // when the ball starts to drop
+						t = 0; // reset the time to 0
+					}
 				}
-			}
-			xPos = xPos + this.bVel *intervalTime;
-			t += intervalTime; // increasing the time by the interval
-			myBall.setLocation(xPos ,600 - (this.bSize * 2) - h);
-			
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+				xPos = xPos + this.bVel *intervalTime;
+				t += intervalTime; // increasing the time by the interval
+				myBall.setLocation(xPos ,600 - (this.bSize * 2) - h);
+				
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}			
 		}
 	}
 }
