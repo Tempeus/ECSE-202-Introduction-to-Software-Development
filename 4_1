@@ -25,32 +25,20 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 	private static final int WIDTH = 1200;
 	public static final int HEIGHT = 600;
 	public static final int OFFSET = 200;
-	public static final int NUMBALLS = 15;
-	private static final double MINSIZE = 1;
-	private static final double MAXSIZE = 8;
-	private static final double XMIN = 10;
-	private static final double XMAX = 50;
-	private static final double YMIN = 50;
-	private static final double YMAX = 100;
-	private static final double EMIN = 0.4;
-	private static final double EMAX = 0.9;
-	private static final double VMIN = 0.5;
-	private static final double VMAX = 3.0;
+	public static int NUMBALLS = 15;
+	private static double MINSIZE = 1;
+	private static double MAXSIZE = 8;
+	private static double XMIN = 10;
+	private static double XMAX = 50;
+	private static double YMIN = 50;
+	private static double YMAX = 100;
+	private static double EMIN = 0;
+	private static double EMAX = 1;
+	private static double VMIN = 0;
+	private static double VMAX = 3;
 	
 	RandomGenerator rgen = new RandomGenerator();
 	bTree myTree = new bTree();	
-	
-	int nBalls;
-	int minSize;
-	int maxSize;
-	int xMin;
-	int xMax;
-	int yMin;
-	int yMax;
-	int lMin;
-	int lMax;
-	int velMin;
-	int velMax;
 	
 	void addSliderListeners() {
 		numballSlider.Slider.addChangeListener((ChangeListener)this);
@@ -70,58 +58,58 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		JSlider source = (JSlider)e.getSource();
 		
 		if (source == numballSlider.Slider) {
-			nBalls = numballSlider.getSlider();
-			numballSlider.setSlider(nBalls);
+			NUMBALLS = numballSlider.getSlider();
+			numballSlider.setSlider(NUMBALLS);
 		}
 		
 		else if (source == MinSize.Slider) {
-			minSize = MinSize.getSlider();
-			MinSize.setSlider(minSize);
+			MINSIZE = MinSize.getSlider();
+			MinSize.setSlider(MINSIZE);
 		}
 		
 		else if (source == MaxSize.Slider) {
-			maxSize = MaxSize.getSlider();
-			MaxSize.setSlider(maxSize);
+			MAXSIZE = MaxSize.getSlider();
+			MaxSize.setSlider(MAXSIZE);
 		}
 		
 		else if (source == XMin.Slider) {
-			xMin = XMin.getSlider();
-			XMin.setSlider(xMin);
+			XMIN = XMin.getSlider();
+			XMin.setSlider(XMIN);
 		}
 		
 		else if (source == XMax.Slider) {
-			xMax = XMax.getSlider();
-			XMax.setSlider(xMax);
+			XMAX = XMax.getSlider();
+			XMax.setSlider(XMAX);
 		}
 		
 		else if (source == YMin.Slider) {
-			yMin = YMin.getSlider();
-			YMin.setSlider(yMin);
+			YMIN = YMin.getSlider();
+			YMin.setSlider(YMIN);
 		}
 		
 		else if (source == YMax.Slider) {
-			yMax = YMax.getSlider();
-			YMax.setSlider(yMax);
+			YMAX = YMax.getSlider();
+			YMax.setSlider(YMAX);
 		}
 		
 		else if (source == LMin.Slider) {
-			lMin = LMin.getSlider();
-			LMin.setSlider(lMin);
+			EMIN = LMin.getSlider();
+			LMin.setSlider(EMIN);
 		}
 		
 		else if (source == LMax.Slider) {
-			lMax = LMax.getSlider();
-			LMax.setSlider(lMax);
+			EMAX = LMax.getSlider();
+			LMax.setSlider(EMAX);
 		}
 		
 		else if (source == VelMin.Slider) {
-			velMin = VelMin.getSlider();
-			VelMin.setSlider(velMin);
+			VMIN = VelMin.getSlider();
+			VelMin.setSlider(VMIN);
 		}
 		
 		else if (source == VelMax.Slider) {
-			velMax = VelMax.getSlider();
-			VelMax.setSlider(velMax);
+			VMAX = VelMax.getSlider();
+			VelMax.setSlider(VMAX);
 		}
 	}
 	
@@ -137,37 +125,62 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		bSimC.addItem("Run");
 		bSimC.addItem("Clear");
 		bSimC.addItem("Stop");
+		bSimC.addItem("Resume"); 
 		bSimC.addItem("Quit");
 		add(bSimC,NORTH);
 		addJComboListeners();
-		
-		
+				
 	}
 	
 	void addJComboListeners() {
 		bSimC.addItemListener((ItemListener)this);
 	}
 	
+	
+	
 	public void itemStateChanged(ItemEvent e) {
-		JComboBox source = (JComboBox)e.getSource();
-		
-		if (source == bSimC) {
-			if (bSimC.getSelectedIndex() == 1) { // Run
-				System.out.println("Starting Simulation");
-				//this.SimRunning = true;
-			}
+		if (e.getStateChange() == ItemEvent.SELECTED) {
+			JComboBox source = (JComboBox)e.getSource();
 			
-			if (bSimC.getSelectedIndex() == 2) { // CLear
+			if (source == bSimC) {
+				if (bSimC.getSelectedIndex() == 1) { // Run
+					System.out.println("Starting Simulation");
+					for(int i = 0; i < NUMBALLS; i++) {
+						double iX = rgen.nextDouble(XMIN,XMAX);
+						double iY = rgen.nextDouble(YMIN,YMAX);
+						double iSize = rgen.nextDouble(MINSIZE,MAXSIZE);
+						Color iColor = rgen.nextColor();
+						double iE = rgen.nextDouble(EMIN,EMAX);
+						double iV = rgen.nextDouble(VMIN,VMAX);
+						
+						gBall iball = new gBall(iX *5,iY *5,iSize *5,iColor ,iE ,iV * 5);
+						add(iball.myBall);
+						myTree.addNode(iball);
+						iball.start();
+					}
+				}
 				
-			}
-			
-			if (bSimC.getSelectedIndex() == 3) { // Stop
+				if (bSimC.getSelectedIndex() == 2) { // Clear
+					removeAll();
+					GRect ground = new GRect(0,HEIGHT,WIDTH,3);
+					ground.setColor(Color.BLACK);
+					ground.setFilled(true);
+					add(ground);
+				}
 				
+				if (bSimC.getSelectedIndex() == 3) { // Stop
+					gBall.intervalTime = 0;
+				}
+				
+				if (bSimC.getSelectedIndex() == 4) { // Resume
+					gBall.intervalTime = 0.1;
+				}
+				
+				if (bSimC.getSelectedIndex() == 5) { // Quit
+					System.exit(0);
+				}
 			}
 			
-			if (bSimC.getSelectedIndex() == 4) { // Quit
-				System.exit(0);
-			}
 		}
 		
 	}
@@ -184,6 +197,8 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 	Sliders VelMin;
 	Sliders VelMax;
 	
+	gBall iball;
+	
 	public void run() {
 		JPanel pEast = new JPanel();
 		
@@ -192,40 +207,48 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		
 		pEast.setLayout(new GridLayout(17,1));
 		
-		Sliders numballSlider = new Sliders("NUMBALLS", 1, 15, 25);
+		numballSlider = new Sliders("NUMBALLS", 1, NUMBALLS, 25);
 		pEast.add(numballSlider.Panel, "EAST");
 		numballSlider.Slider.addChangeListener((ChangeListener)this);
 		
-		Sliders MinSize = new Sliders("MIN SIZE", 1.0, 1.0, 25.0);
+		MinSize = new Sliders("MIN SIZE", 1.0, MINSIZE, 25.0);
 		pEast.add(MinSize.Panel,"EAST");
 		MinSize.Slider.addChangeListener((ChangeListener)this);
 		
-		Sliders MaxSize = new Sliders("MAX SIZE", 1.0, 8.0, 25.0);
+		MaxSize = new Sliders("MAX SIZE", 1.0, MAXSIZE, 25.0);
 		pEast.add(MaxSize.Panel,"EAST");
 		MaxSize.Slider.addChangeListener((ChangeListener)this);
 		
-		Sliders XMin = new Sliders("X MIN", 1.0, 10.0, 200.0);
+		XMin = new Sliders("X MIN", 1.0, XMIN, 200.0);
 		pEast.add(XMin.Panel,"EAST");
 		XMin.Slider.addChangeListener((ChangeListener)this);
 		
-		Sliders XMax = new Sliders("X MAX", 1.0, 50.0, 200.0);
+		XMax = new Sliders("X MAX", 1.0, XMAX, 200.0);
 		pEast.add(XMax.Panel,"EAST");
 		XMax.Slider.addChangeListener((ChangeListener)this);
 		
-		Sliders LMin = new Sliders("LOSS MIN", 0.0, 0.4, 1.0);
+		YMax = new Sliders("Y MIN", 1.0, YMAX, 100.0);
+		pEast.add(YMax.Panel,"EAST");
+		YMax.Slider.addChangeListener((ChangeListener)this);
+		
+		YMin = new Sliders("Y MAX", 1.0, YMAX, 100.0);
+		pEast.add(YMin.Panel, "EAST");
+		YMin.Slider.addChangeListener((ChangeListener)this);
+		
+		LMin = new Sliders("LOSS MIN", 0.0, EMIN, 1.0);
 		pEast.add(LMin.Panel,"EAST");
 		LMin.Slider.addChangeListener((ChangeListener)this);
 		
-		Sliders LMax = new Sliders("LOSS MAX", 0.0, 1.0, 1.0);
-		pEast.add(LMax.Panel,"EAST");
+		LMax = new Sliders("LOSS MAX", 0.0, EMAX, 1.0);
+		pEast.add(LMax.Panel, "EAST");
 		LMax.Slider.addChangeListener((ChangeListener)this);
 		
-		Sliders VelMin = new Sliders("X VEL MIN", 0.0, 1.0, 10.0);
-		pEast.add(VelMin.Panel,"EAST");
+		VelMin = new Sliders("X VEL MIN", 0.0, VMIN, 10.0);
+		pEast.add(VelMin.Panel, "EAST");
 		VelMin.Slider.addChangeListener((ChangeListener)this);
-		
-		Sliders VelMax = new Sliders("X VEL MAX", 0.0, 5.0, 10.0);
-		pEast.add(VelMax.Panel,"EAST");
+
+		VelMax = new Sliders("X VEL MAX", 0.0, VMAX, 10.0);
+		pEast.add(VelMax.Panel, "EAST");
 		VelMax.Slider.addChangeListener((ChangeListener)this);
 		
 		JLabel SingleBallParam = new JLabel("Single Ball Instance Parameters");
@@ -243,19 +266,7 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		add(ground);
 		
 		
-		for(int i = 0; i < NUMBALLS; i++) {
-			double iX = rgen.nextDouble(XMIN,XMAX);
-			double iY = rgen.nextDouble(YMIN,YMAX);
-			double iSize = rgen.nextDouble(MINSIZE,MAXSIZE);
-			Color iColor = rgen.nextColor();
-			double iE = rgen.nextDouble(EMIN,EMAX);
-			double iV = rgen.nextDouble(VMIN,VMAX);
-			
-			gBall iball = new gBall(iX *5,iY * 5,iSize * 5 ,iColor ,iE ,iV);
-			add(iball.myBall);
-			myTree.addNode(iball);
-			iball.start();
-		}
+		
 		while(myTree.isRunning());
 		
 		GLabel Notification = new GLabel ("Left click to sort the balls",400, 500);
