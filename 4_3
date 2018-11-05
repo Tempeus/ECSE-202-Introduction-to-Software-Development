@@ -62,4 +62,9 @@ public class Sliders extends ConsoleProgram{
 		sRead.setText(val+"");
 	}
 	
+	
+	public void setSlider(double val) {
+		Slider.setValue((int)val);
+		sRead.setText(val+"");
+	}
 }
