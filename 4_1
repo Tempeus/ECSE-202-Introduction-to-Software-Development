@@ -112,6 +112,7 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		bSimC.addItem("Clear");
 		bSimC.addItem("Stop");
 		bSimC.addItem("Resume"); 
+		bSimC.addItem("Sort");
 		bSimC.addItem("Quit");
 		add(bSimC,NORTH);
 		addJComboListeners();
@@ -160,7 +161,11 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 					gBall.intervalTime = 0.1;
 				}
 				
-				if (bSimC.getSelectedIndex() == 5) { // Quit
+				if (bSimC.getSelectedIndex() == 5) { // Sort
+					myTree.moveSort();
+				}
+				
+				if (bSimC.getSelectedIndex() == 6) { // Quit
 					System.exit(0);
 				}
 			}
@@ -251,13 +256,13 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		
 		
 		
-		while(myTree.isRunning());
+		//while(myTree.isRunning());
 		
-		GLabel Notification = new GLabel ("Left click to sort the balls",400, 500);
-		Notification.setFont(new Font("Serif",Font.BOLD, 46));
-		add(Notification);
-		waitForClick();
-		myTree.moveSort();
+		//GLabel Notification = new GLabel ("Left click to sort the balls",400, 500);
+		//Notification.setFont(new Font("Serif",Font.BOLD, 46));
+		//add(Notification);
+		//waitForClick();
+		//myTree.moveSort();
 	}
 }
 
