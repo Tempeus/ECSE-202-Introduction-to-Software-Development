@@ -130,13 +130,13 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 			if (source == bSimC) {
 				if (bSimC.getSelectedIndex() == 1) { // Run
 					System.out.println("Starting Simulation");
-					for(int i = 0; i < NUMBALLS / 100; i++) {
-						double iX = rgen.nextDouble(XMIN, XMAX) / 100.0;
-						double iY = rgen.nextDouble(YMIN, YMAX) / 100.0;
-						double iSize = rgen.nextDouble(MINSIZE, MAXSIZE) / 100.0;
+					for(int i = 0; i < numballSlider.getISlider() ; i++) {
+						double iX = rgen.nextDouble(XMin.getDSlider(), XMax.getDSlider()) / 100.0;
+						double iY = rgen.nextDouble(YMin.getDSlider(), YMax.getDSlider()) / 100.0;
+						double iSize = rgen.nextDouble(MinSize.getDSlider(), MaxSize.getDSlider()) / 100.0;
 						Color iColor = rgen.nextColor();
-						double iE = rgen.nextDouble(EMIN, EMAX) / 100.0;
-						double iV = rgen.nextDouble(VMIN, VMAX) / 100.0;
+						double iE = rgen.nextDouble(LMin.getDSlider(), LMax.getDSlider()) / 100.0;
+						double iV = rgen.nextDouble(VelMin.getDSlider(), VelMax.getDSlider()) / 100.0;
 						
 						gBall iball = new gBall(iX *5,iY *5,iSize *5,iColor ,iE ,iV * 5);
 						add(iball.myBall);
@@ -174,7 +174,7 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		
 	}
 
-	Sliders numballSlider;
+	ISliders numballSlider;
 	Sliders MinSize;
 	Sliders MaxSize;
 	Sliders XMin;
@@ -196,7 +196,7 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		
 		pEast.setLayout(new GridLayout(17,1));
 		
-		numballSlider = new Sliders("NUMBALLS", 1, 15, 25);
+		numballSlider = new ISliders("NUMBALLS", 1, 15, 25);
 		pEast.add(numballSlider.Panel, "EAST");
 		numballSlider.Slider.addChangeListener((ChangeListener)this);
 		
