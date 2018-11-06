@@ -40,75 +40,61 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 	RandomGenerator rgen = new RandomGenerator();
 	bTree myTree = new bTree();	
 	
-	void addSliderListeners() {
-		numballSlider.Slider.addChangeListener((ChangeListener)this);
-		MinSize.Slider.addChangeListener((ChangeListener)this);
-		MaxSize.Slider.addChangeListener((ChangeListener)this);
-		XMax.Slider.addChangeListener((ChangeListener)this);
-		XMin.Slider.addChangeListener((ChangeListener)this);
-		YMax.Slider.addChangeListener((ChangeListener)this);
-		YMin.Slider.addChangeListener((ChangeListener)this);
-		LMax.Slider.addChangeListener((ChangeListener)this);
-		LMin.Slider.addChangeListener((ChangeListener)this);
-		VelMin.Slider.addChangeListener((ChangeListener)this);
-		VelMax.Slider.addChangeListener((ChangeListener)this);
-	}
-	
 	public void stateChanged(ChangeEvent e) {
 		JSlider source = (JSlider)e.getSource();
 		
 		if (source == numballSlider.Slider) {
-			NUMBALLS = numballSlider.getSlider();
+			NUMBALLS = numballSlider.getISlider();
 			numballSlider.setSlider(NUMBALLS);
 		}
 		
 		else if (source == MinSize.Slider) {
-			MINSIZE = MinSize.getSlider();
+			MINSIZE = MinSize.getDSlider();
 			MinSize.setSlider(MINSIZE);
 		}
 		
 		else if (source == MaxSize.Slider) {
-			MAXSIZE = MaxSize.getSlider();
+			MAXSIZE = MaxSize.getDSlider();
 			MaxSize.setSlider(MAXSIZE);
 		}
 		
 		else if (source == XMin.Slider) {
-			XMIN = XMin.getSlider();
+			XMIN = XMin.getDSlider();
 			XMin.setSlider(XMIN);
 		}
 		
 		else if (source == XMax.Slider) {
-			XMAX = XMax.getSlider();
+			XMAX = XMax.getDSlider();
 			XMax.setSlider(XMAX);
 		}
 		
 		else if (source == YMin.Slider) {
-			YMIN = YMin.getSlider();
+			YMIN = YMin.getDSlider();
 			YMin.setSlider(YMIN);
 		}
 		
 		else if (source == YMax.Slider) {
-			YMAX = YMax.getSlider();
+			YMAX = YMax.getDSlider();
 			YMax.setSlider(YMAX);
 		}
 		
 		else if (source == LMin.Slider) {
-			EMIN = LMin.getSlider();
+			EMIN = LMin.getDSlider();
 			LMin.setSlider(EMIN);
 		}
 		
 		else if (source == LMax.Slider) {
-			EMAX = LMax.getSlider();
+			EMAX = LMax.getDSlider();
 			LMax.setSlider(EMAX);
 		}
 		
 		else if (source == VelMin.Slider) {
-			VMIN = VelMin.getSlider();
+			VMIN = VelMin.getDSlider();
 			VelMin.setSlider(VMIN);
 		}
 		
 		else if (source == VelMax.Slider) {
-			VMAX = VelMax.getSlider();
+			VMAX = VelMax.getDSlider();
 			VelMax.setSlider(VMAX);
 		}
 	}
@@ -136,8 +122,6 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		bSimC.addItemListener((ItemListener)this);
 	}
 	
-	
-	
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			JComboBox source = (JComboBox)e.getSource();
@@ -145,13 +129,13 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 			if (source == bSimC) {
 				if (bSimC.getSelectedIndex() == 1) { // Run
 					System.out.println("Starting Simulation");
-					for(int i = 0; i < NUMBALLS; i++) {
-						double iX = rgen.nextDouble(XMIN,XMAX);
-						double iY = rgen.nextDouble(YMIN,YMAX);
-						double iSize = rgen.nextDouble(MINSIZE,MAXSIZE);
+					for(int i = 0; i < NUMBALLS / 100; i++) {
+						double iX = rgen.nextDouble(XMIN, XMAX) / 100.0;
+						double iY = rgen.nextDouble(YMIN, YMAX) / 100.0;
+						double iSize = rgen.nextDouble(MINSIZE, MAXSIZE) / 100.0;
 						Color iColor = rgen.nextColor();
-						double iE = rgen.nextDouble(EMIN,EMAX);
-						double iV = rgen.nextDouble(VMIN,VMAX);
+						double iE = rgen.nextDouble(EMIN, EMAX) / 100.0;
+						double iV = rgen.nextDouble(VMIN, VMAX) / 100.0;
 						
 						gBall iball = new gBall(iX *5,iY *5,iSize *5,iColor ,iE ,iV * 5);
 						add(iball.myBall);
@@ -207,47 +191,47 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		
 		pEast.setLayout(new GridLayout(17,1));
 		
-		numballSlider = new Sliders("NUMBALLS", 1, NUMBALLS, 25);
+		numballSlider = new Sliders("NUMBALLS", 1, 15, 25);
 		pEast.add(numballSlider.Panel, "EAST");
 		numballSlider.Slider.addChangeListener((ChangeListener)this);
 		
-		MinSize = new Sliders("MIN SIZE", 1.0, MINSIZE, 25.0);
+		MinSize = new Sliders("MIN SIZE", 1.0, 1.0, 25.0);
 		pEast.add(MinSize.Panel,"EAST");
 		MinSize.Slider.addChangeListener((ChangeListener)this);
 		
-		MaxSize = new Sliders("MAX SIZE", 1.0, MAXSIZE, 25.0);
+		MaxSize = new Sliders("MAX SIZE", 1.0, 8.0, 25.0);
 		pEast.add(MaxSize.Panel,"EAST");
 		MaxSize.Slider.addChangeListener((ChangeListener)this);
 		
-		XMin = new Sliders("X MIN", 1.0, XMIN, 200.0);
+		XMin = new Sliders("X MIN", 1.0, 10.0, 200.0);
 		pEast.add(XMin.Panel,"EAST");
 		XMin.Slider.addChangeListener((ChangeListener)this);
 		
-		XMax = new Sliders("X MAX", 1.0, XMAX, 200.0);
+		XMax = new Sliders("X MAX", 1.0, 50.0, 200.0);
 		pEast.add(XMax.Panel,"EAST");
 		XMax.Slider.addChangeListener((ChangeListener)this);
 		
-		YMax = new Sliders("Y MIN", 1.0, YMAX, 100.0);
-		pEast.add(YMax.Panel,"EAST");
-		YMax.Slider.addChangeListener((ChangeListener)this);
-		
-		YMin = new Sliders("Y MAX", 1.0, YMAX, 100.0);
-		pEast.add(YMin.Panel, "EAST");
+		YMin = new Sliders("Y MIN", 1.0, 50.0, 100.0);
+		pEast.add(YMin.Panel,"EAST");
 		YMin.Slider.addChangeListener((ChangeListener)this);
 		
-		LMin = new Sliders("LOSS MIN", 0.0, EMIN, 1.0);
+		YMax = new Sliders("Y MAX", 1.0, 100.0, 100.0);
+		pEast.add(YMax.Panel, "EAST");
+		YMax.Slider.addChangeListener((ChangeListener)this);
+		
+		LMin = new Sliders("LOSS MIN", 0.0, 0.1, 1.0);
 		pEast.add(LMin.Panel,"EAST");
 		LMin.Slider.addChangeListener((ChangeListener)this);
 		
-		LMax = new Sliders("LOSS MAX", 0.0, EMAX, 1.0);
+		LMax = new Sliders("LOSS MAX", 0.0, 0.9, 1.0);
 		pEast.add(LMax.Panel, "EAST");
 		LMax.Slider.addChangeListener((ChangeListener)this);
 		
-		VelMin = new Sliders("X VEL MIN", 0.0, VMIN, 10.0);
+		VelMin = new Sliders("X VEL MIN", 0.0, 4.0, 10.0);
 		pEast.add(VelMin.Panel, "EAST");
 		VelMin.Slider.addChangeListener((ChangeListener)this);
 
-		VelMax = new Sliders("X VEL MAX", 0.0, VMAX, 10.0);
+		VelMax = new Sliders("X VEL MAX", 0.0, 6.0, 10.0);
 		pEast.add(VelMax.Panel, "EAST");
 		VelMax.Slider.addChangeListener((ChangeListener)this);
 		
