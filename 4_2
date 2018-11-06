@@ -91,15 +91,6 @@ public class bTree {
 		}
 	}
 	
-	public void pausing() {
-		Stop(root);
-	}
-	
-	private void Stop(bNode root) {
-		if(root.left !=null) Stop(root.left);
-		root.iBall.r = false;
-		if(root.right != null) Stop(root.right);
-	}
 	
 	
 	public class bNode {
