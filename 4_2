@@ -1,3 +1,5 @@
+import acm.graphics.GOval;
+
 /**
  * Implements a Binary tree class
  * @author Kevin
@@ -91,11 +93,14 @@ public class bTree {
 		}
 	}
 	
+	public bNode findNode(GOval value) {
+		 return findNodeRecursive(root, value);
+		}
 	
 	
-	public class bNode {
-		gBall iBall;
-		bNode left;
-		bNode right;
+	private bNode findNodeRecursive(bNode current, GOval value) {
+		if (root.left != null && current.iBall.myBall == value) findNodeRecursive(root.left, value);
+		if (root.right != null && current.iBall.myBall == value) findNodeRecursive(root.right, value);
+		return current;
 	}
 }
