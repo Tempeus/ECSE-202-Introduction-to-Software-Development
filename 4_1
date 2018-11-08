@@ -6,12 +6,14 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 
 import acm.graphics.GLabel;
 import acm.graphics.GLine;
@@ -20,6 +22,8 @@ import acm.graphics.GOval;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 import acm.util.RandomGenerator;
+
+
 
 
 @SuppressWarnings("serial")
@@ -40,6 +44,13 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 	private static double VMIN = 0;
 	private static double VMAX = 3;
 	
+	//Single Ball Param
+	private int sColor;
+	private double sBallSize;
+	private double sELoss;
+	private double sVel;
+	
+	
 	private GObject gobj; /* The object being dragged */
 	private double lastX; /* The last mouse X position */
 	private double lastY; /* The last mouse Y position */
@@ -52,9 +63,13 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 	RandomGenerator rgen = new RandomGenerator();
 	bTree myTree = new bTree();	
 	
+	/**
+	 * This method is used to set values according the the accompanied sliders
+	 */
 	public void stateChanged(ChangeEvent e) {
 		JSlider source = (JSlider)e.getSource();
 		
+		//Global Ball Parameters
 		if (source == numballSlider.Slider) {
 			NUMBALLS = numballSlider.getISlider();
 			numballSlider.setSlider(NUMBALLS);
@@ -109,14 +124,17 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 			VMAX = VelMax.getDSlider();
 			VelMax.setSlider(VMAX);
 		}
+		
 	}
 	
 	public void init() {
 		addMouseListeners();
 	}
 	
+	/**
+	 * this is used to tell the JComboBox the available options
+	 */
 	JComboBox<String> bSimC;
-	
 	void setChoosers() {
 		bSimC = new JComboBox<String>();
 		bSimC.addItem("bSim");
@@ -135,6 +153,9 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		bSimC.addItemListener((ItemListener)this);
 	}
 	
+	/**
+	 * This method is used to describe the functions for each of the options of the JComboBox
+	 */
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			JComboBox source = (JComboBox)e.getSource();
@@ -186,6 +207,7 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		
 	}
 
+
 	ISliders numballSlider;
 	Sliders MinSize;
 	Sliders MaxSize;
@@ -198,11 +220,21 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 	Sliders VelMin;
 	Sliders VelMax;
 	
+	ISliders sbColor;
+	Sliders sbBallSize;
+	Sliders sbELoss;
+	Sliders sbVel;
+	
 	gBall iball;
 	
+	
+	/**
+	 * This method is used to generate a GUI for each sliders and display it in the program
+	 */
 	public void run() {
 		JPanel pEast = new JPanel();
 		
+		//Global Ball Param
 		JLabel generalSim = new JLabel("General Simulation Parameters");
 		pEast.add(generalSim);
 		
@@ -248,12 +280,30 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		pEast.add(VelMin.Panel, "EAST");
 		VelMin.Slider.addChangeListener((ChangeListener)this);
 
+
 		VelMax = new Sliders("X VEL MAX", 0.0, 6.0, 10.0);
 		pEast.add(VelMax.Panel, "EAST");
 		VelMax.Slider.addChangeListener((ChangeListener)this);
 		
+		// Single Param Ball
 		JLabel SingleBallParam = new JLabel("Single Ball Instance Parameters");
 		pEast.add(SingleBallParam);
+		
+		sbColor = new ISliders("COLOR", 0, 1, 10);
+		pEast.add(sbColor.Panel, "EAST");
+		sbColor.Slider.addChangeListener((ChangeListener)this);
+		
+		sbBallSize = new Sliders("BALL SIZE", 1.0, 4.0, 8.0);
+		pEast.add(sbBallSize.Panel, "EAST");
+		sbBallSize.Slider.addChangeListener((ChangeListener)this);
+		
+		sbELoss = new Sliders("ENERGY LOSS", 0.0, 0.7, 1.0);
+		pEast.add(sbELoss.Panel, "EAST");
+		sbELoss.Slider.addChangeListener((ChangeListener)this);
+		
+		sbVel = new Sliders("X VEL", 0.0, 3.0, 5.0);
+		pEast.add(sbVel.Panel, "EAST");
+		sbVel.Slider.addChangeListener((ChangeListener)this);
 		
 		add(pEast);
 		
@@ -266,33 +316,26 @@ public class bSim extends GraphicsProgram implements ChangeListener, ItemListene
 		ground.setFilled(true);
 		add(ground);
 		
-		
-		
-		//while(myTree.isRunning());
-		
-		//GLabel Notification = new GLabel ("Left click to sort the balls",400, 500);
-		//Notification.setFont(new Font("Serif",Font.BOLD, 46));
-		//add(Notification);
-		//waitForClick();
-		//myTree.moveSort();
+
 	}
-	/** Method called on mouse press to record the coordinates
-	of the click */
-	public void mousePressed(MouseEvent e) {
-		lastX = e.getX();
-		lastY = e.getY();
-		gobj = getElementAt(lastX, lastY);
-		if (!(gobj==null)) {
-			clickedOval = (GOval)gobj; //casting to GOval
-			clickedNode = myTree.findNode(clickedOval);
-			clickedNode.iBall.myBall.setColor(Color.RED);
-			clickedNode.iBall.r = false;
-			}
-		else {
-			System.out.println("null"); /* show in console that click was not
-		on an object */
-		}
+	// Sadly the clicking method does not work
+//	/** Method called on mouse press to record the coordinates
+//	of the click */
+//	public void mousePressed(MouseEvent e) {
+//		lastX = e.getX();
+//		lastY = e.getY();
+//		gobj = getElementAt(lastX, lastY);
+//		if (!(gobj==null)) {
+//			clickedOval = (GOval)gobj; //casting to GOval
+//			clickedNode = myTree.findNode(clickedOval);
+//			clickedNode.iBall.myBall.setColor(Color.RED);
+//			clickedNode.iBall.r = false;
+//			}
+//		else {
+//			System.out.println("null"); /* show in console that click was not
+//		on an object */
+//		}
 	}
 }
 
-// make it so it can take doubles as well
+
