@@ -17,11 +17,9 @@ int base;
 int main(void){
 	int quotient = number;
 	int n = 0;
-	char array[n+1];
-
-	
+		
 	printf("dec2base ");
-	scanf("%d %d", &number,&base);
+	sscanf("%d %d", &number,&base);
 
 	if (number < 0 || number > 2147483647){
 		printf("\nError: Number must be of range [0, 2147483647].");
@@ -39,6 +37,7 @@ int main(void){
 			quotient = quotient / base;
 			n ++;
 		}
+		char array[n+1];		
 		dec2base(number, base, array);
 	}
 }
@@ -68,15 +67,17 @@ void dec2base(int input, int base, char *str){
 
 		input = input / base;
 		i++;
-	
+	}
 	revStr(str,i);
 }
-
 void revStr(char *str, int length){
 	char* Rstr = (char*)malloc(sizeof(char)*length);
 	int i;
 	for(i = 0; i < length; i++){
 		Rstr[i] = str[length - i - 1];
 	}
-	printf("The Base-%d form of %d is: %s",base, number, Rstr);
+	printf("The Base-%d form of %d is: ",base, number);
+	for (i = 0; i < length; i++){
+		printf("%c",Rstr[i]);
+	}
 }
