@@ -66,107 +66,107 @@ char num2letter(int *remainder){
 	char letter;
 
 	if (*remainder == 10){
-		letter = "A";
+		letter = 'A';
 	}
 
 	if (remainder == 11){
-		letter = "B";
+		letter = 'B';
 	}
 
 	if (remainder == 12){
-		letter = "C";
+		letter = 'C';
 	}
 
 	if (remainder == 13){
-		letter = "D";
+		letter = 'D';
 	}
 
 	if (remainder == 14){
-		letter = "E";
+		letter = 'E';
 	}
 
 	if (remainder == 15){
-		letter = "F";
+		letter = 'F';
 	}
 
 	if (remainder == 16){
-		letter = "G";
+		letter = 'G';
 	}
 
 	if (remainder == 17){
-		letter = "H";
+		letter = 'H';
 	}
 
 	if (remainder == 18){
-		letter = "I";
+		letter = 'I';
 	}
 
 	if (remainder == 19){
-		letter = "J";
+		letter = 'J';
 	}
 
 	if (remainder == 20){
-		letter = "K";
+		letter = 'K';
 	}
 
 	if (remainder == 21){
-		letter = "L";
+		letter = 'L';
 	}
 
 	if (remainder == 22){
-		letter = "M";
+		letter = 'M';
 	}
 
 	if (remainder == 23){
-		letter = "N";
+		letter = 'N';
 	}
 
 	if (remainder == 24){
-		letter = "O";
+		letter = 'O';
 	}
 
 	if (remainder == 25){
-		letter = "P";
+		letter = 'P';
 	}
 
 	if (remainder == 26){
-		letter = "Q";
+		letter = 'Q';
 	}
 
 	if (remainder == 27){
-		letter = "R";
+		letter = 'R';
 	}
 
 	if (remainder == 28){
-		letter = "S";
+		letter = 'S';
 	}
 
 	if (remainder == 29){
-		letter = "T";
+		letter = 'T';
 	}
 
 	if (remainder == 30){
-		letter = "U";
+		letter = 'U';
 	}
 
 	if (remainder == 31){
-		letter = "V";
+		letter = 'V';
 	}
 
 	if (remainder == 32){
-		letter = "W";
+		letter = 'W';
 	}
 
 	if (remainder == 33){
-		letter = "X";
+		letter = 'X';
 	}
 
 	if (remainder == 34){
-		letter = "Y";
+		letter = 'Y';
 	}
 
 	if (remainder == 35){
-		letter = "Z";
+		letter = 'Z';
 	}
 	return letter;
 }
