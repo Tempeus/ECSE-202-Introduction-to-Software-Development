@@ -2,9 +2,10 @@
  * dec2base.c
  *
  *  Created on: Nov 14, 2018
- *      Author: Kevin
  *  Student ID: 260862327
+ *      Author: Kevin
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 
