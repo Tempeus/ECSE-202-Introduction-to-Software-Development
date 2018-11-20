@@ -47,7 +47,7 @@ void dec2base(int input, int base, char* str){
 	while (input != 0){
 		remainder = input % base;
 		if (remainder >= 10){
-			remainder = num2letter(&remainder);
+			remainder = num2letter(remainder);
 		}
 
 		//add to array
