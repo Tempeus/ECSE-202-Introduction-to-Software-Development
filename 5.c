@@ -14,12 +14,20 @@ void revStr(char *str, int length);
 
 int number;
 int base;
-int main(void){
+int main(int argc, char *argv[]){
 	int quotient = number;
 	int n = 0;
 		
 	printf("dec2base ");
-	sscanf("%d %d", &number,&base);
+
+	sscanf(argv[1],"%d", &number);
+	if (argc == 2) {
+		base = 2;
+	}
+
+	else {
+		sscanf(argv[2],"%d", &base);
+	}
 
 	if (number < 0 || number > 2147483647){
 		printf("\nError: Number must be of range [0, 2147483647].");
