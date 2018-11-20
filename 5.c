@@ -17,8 +17,6 @@ int base;
 int main(int argc, char *argv[]){
 	int quotient = number;
 	int n = 0;
-		
-	printf("dec2base ");
 
 	sscanf(argv[1],"%d", &number);
 	if (argc == 2) {
@@ -31,11 +29,13 @@ int main(int argc, char *argv[]){
 
 	if (number < 0 || number > 2147483647){
 		printf("\nError: Number must be of range [0, 2147483647].");
+		return(-1);
 	}
 
 
 	if (base <= 1 || base > 36){
 		printf("\nError: Base must be of the range [2, 36].");
+		return(-1);
 	}
 
 
@@ -87,5 +87,8 @@ void revStr(char *str, int length){
 	printf("The Base-%d form of %d is: ",base, number);
 	for (i = 0; i < length; i++){
 		printf("%c",Rstr[i]);
+	}
+	if (number == 0){
+		printf("%d",0);
 	}
 }
