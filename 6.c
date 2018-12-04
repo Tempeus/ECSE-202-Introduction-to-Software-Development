@@ -20,6 +20,10 @@
 
 #define MAXLEN 20
 //Representative of a Node in a Binary Tree for student records
+
+// defined for the infinite loop later on
+int p = 1
+
 struct StudentRecord {
     char First[MAXLEN];
     char Last[MAXLEN];
@@ -121,7 +125,7 @@ int main(int argc, char *argv[]) {
     fclose(NamesIDs);
     fclose(Marks);
     //All commands are below maximum 5 characters
-	p = 1
+	
     while(p == 1) {
         char str[5];
         printf("\nsdb: ");
