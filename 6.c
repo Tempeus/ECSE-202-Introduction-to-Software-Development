@@ -74,10 +74,10 @@ struct StudentRecord *search(struct StudentRecord *root, int ID_search) {
 //searching the bTree using student names
 struct StudentRecord *searchName(struct StudentRecord *root, char *name_search) {
     //Base case of this recursion, return root if it's null or the name_search is at the present root
-    if (root == NULL || strcmp(root->Last, name_search) == 0) return root;
+    if (root == NULL || strcasecmp(root->Last, name_search) == 0) return root;
     //If the name we are searching is less than the root's key
     //traverse left
-    if (strcmp(root->Last, name_search) > 0) return searchName(root->left, name_search);
+    if (strcasecmp(root->Last, name_search) > 0) return searchName(root->left, name_search);
     //if the name we are searching is greater than the root's ID traverse right
     return searchName(root->right, name_search);
 }
@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
         char str[5];
         printf("\nsdb: ");
         scanf("%s", &str);
-        //convert string into upper
+        //convert string into upper to remove case sensitivity
         for (int i = 0; str[i]; i++) {
             str[i] = toupper((unsigned char) str[i]);
         }
