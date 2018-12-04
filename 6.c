@@ -21,8 +21,8 @@
 #define MAXLEN 20
 //Representative of a Node in a Binary Tree for student records
 
-// defined for the infinite loop later on
-int p = 1
+//this is for the infinite while loop later on
+int p = 1;
 
 struct StudentRecord {
     char First[MAXLEN];
