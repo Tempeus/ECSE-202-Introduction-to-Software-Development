@@ -1,6 +1,6 @@
 /*
  =================================================================================
- Name        : ECSE202_A5.c
+ Name        : ECSE202_A6.c
  Author      : Kevin Li
  Version     : 1.0
  Copyright   : 
@@ -80,7 +80,7 @@ struct StudentRecord *searchName(struct StudentRecord *root, char *name_search) 
 //Traversing through the trees using inorder while also printing a list of all students inorder by name & by ID;
 void inorder(struct StudentRecord *root) {
     if (root->left != NULL) inorder(root->left);
-    printf("%-10s %-10s %-5d %d \n", root->first, root->Last, root->ID, root->Marks);
+    printf("%-10s %-10s %-5d %d \n", root->First, root->Last, root->ID, root->Marks);
     if (root->right != NULL) inorder(root->right);
 }
 
